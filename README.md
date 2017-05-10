@@ -1,6 +1,4 @@
-# calibration
-This is a calibration method to caculate the relative attitude between IMU and camera.
+# M32 driver in ROS Indigo (ubuntu14.04)
 
 # package needed
-- mavros
-- openni2
+opencv2
