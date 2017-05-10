@@ -1,0 +1,19 @@
+<!--  Standalone launcher  -->
+<launch>
+    <node pkg="m32_ros" type="m32_ros" name="m32_ros" output="screen"/>
+        <param name="DigitalGainRight" value="25.0"/>
+	    <param name="DigitalGainLeft" value="25.0" />
+	    <param name="AnalogGainRight" value="0.0" />
+	    <param name="AnalogGainLeft" value="0.0" />
+	   	<param name="ExposureTimeLeft" value="3000" />
+	    <param name="ExposureTimeRight" value="3000" />
+
+	 	<param name="depthEnable"                 type="bool"   value="true"/>
+	 	<param name="videoEnable"                 type="bool"   value="true"/>
+	 	<param name="cameraEnable"                 type="bool"   value="true"/>
+	 	<param name="IMUEnable"                 type="bool"   value="false"/>
+	 	<param name="headEnable"                 type="bool"   value="false"/>
+	 	<param name="handsEnable"                 type="bool"   value="false"/>
+	 	<param name="gazeEnable"                 type="bool"   value="false"/>
+	 	<param name="generalPurposeEnable"                 type="bool"   value="false"/>
+ </launch>
