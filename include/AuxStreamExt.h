@@ -9,7 +9,7 @@
 namespace InuDev
 {
 
-    class CImuFrameExt : public CImuFrame, public CBaseFrameExt    
+    class CImuFrameExt : public CImuFrame    
     {
 
     };

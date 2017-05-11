@@ -49,7 +49,8 @@ namespace InuDev
         eOperationCanceled = 5,         ///<  A stop command canceled the operation
         eUnexpectedParameterValue = 6,  ///<  Illegal input parameter
 
-        eServiceProcessFailure = 11,    ///<  InuService isn't running
+		eServiceProcessFailure = 11,    ///<  InuService isn't running. CInuSensor object must be restarted in order to reconnect with InuService.
+		eSensorDetectionFailure = 12,	///<  No sensor is detected. Recheck that the Sensor is connected to USB port and then restart CInuSensor object.
 
         eInCalibrationMode = 20,        ///<  The service is in calibration mode 
         eGazeNotCalibrated = 21,        ///<  Gaze of current user ID has already been calibrated 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(m32_ros)
 
-set(CMAKE_CXX_FLAGS "-D_REENTRANT -std=c++0x -m64 ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-D_REENTRANT -std=c++11 ${CMAKE_CXX_FLAGS}")
 
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(catkin REQUIRED COMPONENTS
@@ -24,7 +24,6 @@ catkin_package(
 )
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES mavros
   CATKIN_DEPENDS roscpp geometry_msgs eigen_conversions tf2_ros
   DEPENDS Boost
 )
@@ -50,10 +49,10 @@ target_link_libraries(inu
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
   ${OpenCV_LIBRARIES}
-  libCommonUtilities.so
-  libInuStreams.so
+  CommonUtilities
+  InuStreams
  )
-add_executable(m32_ros  src/node.cpp )
+add_executable(m32_ros  src/node.cpp)
 
 target_link_libraries(m32_ros 
   inu

@@ -10,6 +10,10 @@
 #include <limits>
 #include <vector>
 
+#if (defined(_MSC_VER) && (_MSC_VER <1700)) //Visual studio version before 2012
+#pragma warning(disable:4482)
+#endif
+
 #ifndef MAX_PATH  
 #define MAX_PATH 260
 #endif
@@ -200,7 +204,8 @@ namespace InuDev
     class CWebCamStreamExt;
     class CAuxStreamExt;
     class CGeneralPurposeStreamExt;
-	class CFeaturesTrackingStreamExt;
+    class CAudioStreamExt;
+    class CFeaturesTrackingStreamExt;
 
     ///////////////////////////////////////////////////////////////////////
     // Class: CInuSensor
@@ -229,7 +234,8 @@ namespace InuDev
         virtual std::shared_ptr<CWebCamStreamExt>           CreateWebCamStreamExt(uint32_t iChannelID = 0) = 0;
         virtual std::shared_ptr<CAuxStreamExt>              CreateAuxStreamExt(uint32_t iChannelID = 0) = 0;
         virtual std::shared_ptr<CGeneralPurposeStreamExt>   CreateGeneralPurposeStreamExt(uint32_t iChannelID = 0) = 0;
-		virtual std::shared_ptr<CFeaturesTrackingStreamExt>  CreateFeaturesTrackingStreamExt(uint32_t iChannelID = 0) = 0;
+        virtual std::shared_ptr<CAudioStreamExt>            CreateAudioStreamExt(uint32_t iChannelID = 0) = 0;
+        virtual std::shared_ptr<CFeaturesTrackingStreamExt>  CreateFeaturesTrackingStreamExt(uint32_t iChannelID = 0) = 0;
 
         using CBaseStream::Init;
         using CInuSensor::Init;
@@ -237,8 +243,8 @@ namespace InuDev
 
         using CInuSensor::SetSensorParams;
         using CInuSensor::GetSensorParams;
-        virtual CInuError  SetSensorParams(const CSensorParamsExt& params, ECameraName channel = eAllCameras) = 0;
-        virtual CInuError  GetSensorParams(CSensorParamsExt& params, ECameraName channel = eAllCameras) const = 0;
+        virtual CInuError  SetSensorParams(const CSensorParamsExt& params, ECameraName iCameraName) = 0;
+        virtual CInuError  GetSensorParams(CSensorParamsExt& params, ECameraName iCameraName) const = 0;
 
         //Allow setting individual camera settings.
 
@@ -380,7 +386,11 @@ namespace InuDev
         /// \return CInuError
         virtual CInuError ReloadConfiguration(bool iClient, bool iServer) = 0;
 
-
+        /// \brief    Ability to override the default boot mode.  
+        /// \param[in]  iMode 0- boot from file, 1- boot from flash
+        /// \param[in]  iPassword - this operation is protected and can't be executed without providing the correct password
+        /// \return CInuError
+        virtual CInuError SetBootMode(bool iMode, const std::string & iPassword) = 0;
 
         /// \brief   Performs a memory scan in the target.
         /// \return CInuError   

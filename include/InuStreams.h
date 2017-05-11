@@ -30,6 +30,15 @@
 #include "WebCamStream.h"
 
 // Role: Interface for InuDev Head streaming Service. 
+#include "GeneralPurposeStream.h"
+
+// Role: Interface for InuDev Head streaming Service.
+#include "FeaturesTrackingStream.h"
+
+// Role: Interface for InuDev Head streaming Service.
+#include "AuxStream.h"
+
+// Role: Interface for InuDev Head streaming Service.
 #include "HeadStream.h"
 
 // Role: Interface for InuDev Hands tracking streaming Service. 
@@ -37,6 +46,12 @@
 
 // Role: Interface for InuDev Gaze streaming Service. 
 #include "GazeStream.h"
+
+// Role: Interface for InuDev Audio streaming Service. 
+#include "AudioStream.h"
+
+// Role: Interface for InuDev Head streaming Service. 
+#include "SlamStream.h"
 
 
 #endif // __INUSTREAMS_H__

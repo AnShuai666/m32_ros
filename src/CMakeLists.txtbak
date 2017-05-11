@@ -1,0 +1,30 @@
+project(CameraCVTest)
+
+cmake_minimum_required(VERSION 2.6)
+
+find_package(OpenCV REQUIRED)
+
+link_directories(${OpenCV_LIB_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../lib/)
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+message (STATUS "${CMAKE_CURRENT_SOURCE_DIR}")
+include_directories(
+    ../include/
+)
+
+add_executable(RGBDCameraTest node.cpp )
+#add_executable(Orb_display_main Orb_display_main.cpp inuitive.cpp)
+if(WIN32)
+	SET(INU_LIBRARIES
+		CommonUtilities_v120
+		InuStreams_v120
+	)
+elseif(UNIX)
+	SET(INU_LIBRARIES
+		CommonUtilities
+		InuStreams
+	)
+endif()
+target_link_libraries(RGBDCameraTest 
+	${INU_LIBRARIES}
+	${OpenCV_LIBS}
+)

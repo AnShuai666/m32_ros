@@ -62,6 +62,9 @@ namespace InuDev
 		/// \brief    Time stamp which is set when frame is received from InuService (used for statistics and analysis).
 		uint64_t StreamTimestamp;
 
+        /// \brief    true if this frame was recorded by InuService
+        bool WasRecorded;
+
         virtual ~CBaseFrame() {}
 
     protected:
@@ -79,11 +82,12 @@ namespace InuDev
                    std::string iUserID = std::string()) : 
             Timestamp(iTime),
             FrameIndex(iFrameIndex),
-            Score(SCORE_MAX), 
             Valid(iValid),
+            Score(SCORE_MAX), 
             UserID(iUserID),
 			ServiceTimestamp(0),
-			StreamTimestamp(0)
+			StreamTimestamp(0),
+            WasRecorded(false)
 		{
 		}
     };

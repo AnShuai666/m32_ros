@@ -51,6 +51,9 @@ namespace InuDev
         eMessageUnhandled          =    ERRG_HOST_MASK(21),    
         eModuleReady               =    ERRG_HOST_MASK(22),
         eModuleNotReady            =    ERRG_HOST_MASK(23),
+        eMismatchBufferSize        =    ERRG_HOST_MASK(24),
+        eFWGeneralError            =    ERRG_HOST_MASK(25),
+        ePasswordError             =    ERRG_HOST_MASK(26),
 
         // Storage errors
         eMisssingStorageException =     ERRG_HOST_MASK(200),
@@ -166,6 +169,8 @@ namespace InuDev
         eNoWebCamOpticalData =          ERRG_HOST_MASK(3002),		
 		eFailedLoadingInuModelsDB =     ERRG_HOST_MASK(3003),
 		eModelNameNotFound =            ERRG_HOST_MASK(3004),
+	    eGetSensorParamsError =			ERRG_HOST_MASK(3005),
+
         // IMU
         eFailedToGetIMUHeader =		    ERRG_HOST_MASK(3101),
         eZeroIMUChannels =		        ERRG_HOST_MASK(3102),

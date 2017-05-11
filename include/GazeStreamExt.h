@@ -27,7 +27,7 @@ namespace  InuDev
     ///
     /// Comments: 
     ////////////////////////////////////////////////////////////////////////
-    struct CGazeFrameExt : public CGazeFrame, public CBaseFrameExt
+    struct CGazeFrameExt : public CGazeFrame
     {
         struct CFaceData 
         {
@@ -63,7 +63,7 @@ namespace  InuDev
         // Status defined in "inu_cmd.h"
         int          GazeStatus;
 
-        CGazeFrameExt() : CBaseFrameExt() {}
+        CGazeFrameExt() {}
     };
 
 

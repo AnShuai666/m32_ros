@@ -1,7 +1,7 @@
-#include"Inuitive.h"
+ #include"Inuitive.h"
 
 int main(int argc, char *argv[]) {
-    ros::init(argc, argv, "inuitive_ros");
+    ros::init(argc, argv, "m32_ros");
     ros::NodeHandle n;
 
     Inuitive dev(n);
@@ -10,3 +10,4 @@ int main(int argc, char *argv[]) {
 
     return dev.Stop();
 }
+

@@ -53,12 +53,7 @@ Inuitive::Inuitive(ros::NodeHandle& n) : nh(n), color_nh(n), depth_nh(n), depth_
     first_frame = true;
     depth_seq=0;
     rgb_seq=0;
-    
     Start();
-
-//    inuSensor->Record(fileName.str());
-//    sleep(1);
-//    inuSensor->Record("");
 }
 
 Inuitive::~Inuitive(){
@@ -240,47 +235,12 @@ void Inuitive::SaveDepthFrams(
         }
     }
 
- /*
-  *    cv::Mat R,R1,R2,P1,P2,Q;
-    cv::Mat WebcamTranslate;
-    cv::Mat mat_r,mat_t;
-cv::Mat cameraMatrix_depth,cameraMatrix_rgb;
-cameraMatrix_depth = cv::Mat<double>(3,3)<<Depth_camera_info->K;
-
-    for(int i=0;i<3;i++){
-    	WebcamTranslate.data[i] =OpticalData.WebcamTranslate[i]*10;
-    }
-    for(int i=0;i<9;i++){
-    	WebcamTranslate.data[i] =OpticalData.WebcamTranslate[i]*10;
-    }
-    cv::Mat _Rodrigues_Rot((double )OpticalData.WebcamRotate[0], (double )OpticalData.WebcamRotate[1], (double )OpticalData.WebcamRotate[2]);
-    cv::stereoRectify(Depth_camera_info->K,Depth_camera_info->D,Rgb_camera_info->K,Rgb_camera_info->D,cv::Size(640,480),R,WebcamTranslate,R1,R2,P1,P2,Q);
-  */
-
-//    Rgb_camera_info,Depth_camera_info
-//cv::remap( InputArray, OutputArray ,     InputArray, InputArray ,        int interpolation, int borderMode=BORDER_CONSTANT,        const Scalar& borderValue=Scalar());
-//cv::init
-//    cv::Size dsize(640,480);
-//    cv::resize(depth_map,depth_map,dsize,(float)640/608,(float)480/456);
-
-
-//    fx=0, double fy=0,
-//                             int interpolation=INTER_LINEAR
-
-//     std::stringstream fileName;
-//     fileName << "/home/qfeel/data/Depth_" << iFrame.FrameIndex << ".jpg";
-//     cv::imwrite( fileName.str(), depth_map);
-
-//     cv::imshow("depth", depth_map);
-//     cv::waitKey(1);
     cv_bridge::CvImage depth_msg;
     depth_msg.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
 
-//    depth_map.resize(480);
     depth_msg.image = depth_map;
     depth_msg.header.frame_id = depth_optical_frame_id_;
     depth_msg.header.stamp = time_stamp_;
-    // depth_pub.publish(depth_msg.toImageMsg());
     Depth_camera_info=getDepthCameraInfo(iFrame.Width(), iFrame.Height(),time_stamp_);
     pub_depth_.publish(depth_msg.toImageMsg(), Depth_camera_info);
     depth_msg.encoding = sensor_msgs::image_encodings::TYPE_16UC1;
@@ -302,16 +262,10 @@ void Inuitive::SaveCameraFrams(
                   << std::string(retCode) << std::endl;
         return;
     }
-//     cv::namedWindow("video", cv::WINDOW_AUTOSIZE);
     cv::Mat video_rgba8,video_rgb8;
     cv::Mat camera_raw(iFrame.Height(), iFrame.Width(), CV_8UC4, (void *)iFrame.GetData(), iFrame.Width() * 4);
-//    cv::flip(camera_raw,video_rgba8,1);//For the raw image is fliped.
     cv::cvtColor(camera_raw, video_rgb8, CV_BGRA2RGB);
-    // std::stringstream fileName;
-    // fileName << "/home/qfeel/data/Fisheye_" << iFrame.FrameIndex << ".jpg";
-    // cv::imwrite( fileName.str(), mono2rgb8);
-    // cv::imshow("video", mono2rgb8);
-    // cv::waitKey(1);
+
     cv_bridge::CvImage video_msg;
     video_msg.encoding = sensor_msgs::image_encodings::RGB8;
     video_msg.image = video_rgb8;
@@ -346,16 +300,6 @@ void Inuitive::SaveVideoFrams(
         videoL.data[k] = *((unsigned char *)LFrame->GetData() + 4 * k);
         videoR.data[k] = *((unsigned char *)RFrame->GetData() + 4 * k);
     }
-    // cv::imshow("videoL", videoL);
-    // cv::waitKey(1);
-    // cv::imshow("videoR", videoR);
-    // cv::waitKey(1);
-
-    // std::stringstream fileName;
-    // fileName << "/home/qfeel/data/IR_left_" << iFrame.FrameIndex << ".jpg";
-    // cv::imwrite( fileName.str(), videoL);
-    // fileName << "/home/qfeel/data/IR_right_" << iFrame.FrameIndex << ".jpg";
-    // cv::imwrite( fileName.str(), videoR);
 
     cv_bridge::CvImage video_msg;
     video_msg.encoding = sensor_msgs::image_encodings::TYPE_8UC1;
@@ -433,8 +377,6 @@ void Inuitive::SaveAuxFrams(
 }
 void Inuitive::SaveHeadFrams(std::shared_ptr<InuDev::CHeadStream> iStream,
                     const InuDev::CHeadFrame &iFrame, InuDev::CInuError retCode){
-//	std::cout<<iFrame.UserID<<std::endl;
-//	ROS_INFO("head orient:[%lf,%lf,%lf,%lf]",iFrame.Quaternion.W(),iFrame.Quaternion.X(),iFrame.Quaternion.Y(),iFrame.Quaternion.Z());
 }
 void Inuitive::SaveHandsFrams(std::shared_ptr<InuDev::CHandsStream> iStream,
                     const InuDev::CHandsFrame &iFrame, InuDev::CInuError retCode){
@@ -451,14 +393,14 @@ void Inuitive::SaveGeneralPurposeFrams(std::shared_ptr<InuDev::CGeneralPurposeSt
 }
 bool Inuitive::Start() {
     // Creation of CInuSensor object (Inuitive's sensor representation)
-    inuSensor = InuDev::CInuSensorExt::Create();
+    inuSensor = InuDev::CInuSensor::Create();
 
     // Initiate the sensor - it must be call before any access to the sensor.
     // Sensor will start working in low power.
     InuDev::CSensorParams iSensorParams;
     iSensorParams.FPS = 30.0;
     iSensorParams.SensorRes = InuDev::eFull;
-    InuDev::CInuError retCode = inuSensor->Init(iSensorParams);
+    InuDev::CInuError retCode = inuSensor->Init();
     if (retCode != InuDev::eOK) {
         ROS_ERROR("Failed to connect to Inuitive Sensor. Error: %X", (int)retCode);
         return false;
@@ -480,15 +422,15 @@ bool Inuitive::Start() {
     	depthStream = inuSensor->CreateDepthStream();
 		retCode = depthStream->Init();//InuDev::CDepthStream::eDepthRegistration
 
-		InuDev::CSensorControlParams cam_para;
-		inuSensor->GetSensorControlParams(cam_para, 0);
-		cam_para.DigitalGainRight = (unsigned int)DigitalGainRight_;
-		cam_para.DigitalGainLeft = (unsigned int)DigitalGainLeft_;
-		cam_para.AnalogGainRight = (unsigned int)AnalogGainRight_;
-		cam_para.AnalogGainLeft = (unsigned int)AnalogGainLeft_;
-		cam_para.ExposureTimeLeft = (unsigned int)ExposureTimeLeft_;
-		cam_para.ExposureTimeRight = (unsigned int)ExposureTimeRight_;
-		inuSensor->SetSensorControlParams(cam_para, 0);
+		// InuDev::CSensorControlParams cam_para;
+		// inuSensor->GetSensorControlParams(cam_para, 0);
+		// cam_para.DigitalGainRight = (unsigned int)DigitalGainRight_;
+		// cam_para.DigitalGainLeft = (unsigned int)DigitalGainLeft_;
+		// cam_para.AnalogGainRight = (unsigned int)AnalogGainRight_;
+		// cam_para.AnalogGainLeft = (unsigned int)AnalogGainLeft_;
+		// cam_para.ExposureTimeLeft = (unsigned int)ExposureTimeLeft_;
+		// cam_para.ExposureTimeRight = (unsigned int)ExposureTimeRight_;
+		// inuSensor->SetSensorControlParams(cam_para, 0);
 
 		//retCode = depthStream->SetPostProcess(InuDev::eExtraSmoothMode);//eFastMode
 		retCode = depthStream->Start();

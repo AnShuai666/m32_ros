@@ -10,14 +10,15 @@ namespace  InuDev
 {
     struct CSensorParamsExt;
 
+
     struct CVideoInitParams : CImageFrameParams
     {
 		bool isInterleaved;
     };
 
-    struct CVideoFrameExt : public CVideoFrame, public CBaseFrameExt
+    struct CVideoFrameExt : public CVideoFrame
     {
-        INUSTREAMS_API CVideoFrameExt() : CVideoFrame(), CBaseFrameExt() {}
+        INUSTREAMS_API CVideoFrameExt() : CVideoFrame() {}
         /// \brief    Constructs zero size left and right images
 
         /// \brief    Constructor.
@@ -27,13 +28,13 @@ namespace  InuDev
         /// \param[in] iFormat    Image Format.
         /// \param[in] iTimestamp    Frame ID (acquisition time).
         INUSTREAMS_API CVideoFrameExt(unsigned int iWidth, unsigned int iHeight,unsigned int iImageWidth, unsigned int iImageHeight, unsigned short iStartX, unsigned short iStartY, unsigned int  iFormat) : 
-            CVideoFrame(iWidth, iHeight,iImageWidth, iImageHeight,iStartX, iStartY, iFormat), CBaseFrameExt() {} 
+            CVideoFrame(iWidth, iHeight,iImageWidth, iImageHeight,iStartX, iStartY, iFormat) {} 
 
         /// \brief    Copy constructor
-        INUSTREAMS_API CVideoFrameExt(const CVideoFrameExt& input) : CVideoFrame(input), CBaseFrameExt(input) {} 
+        INUSTREAMS_API CVideoFrameExt(const CVideoFrameExt& input) : CVideoFrame(input) {} 
 
         /// \brief    Move constructor
-        INUSTREAMS_API CVideoFrameExt(const CVideoFrameExt&& input) : CVideoFrame(input), CBaseFrameExt(input) {} 
+        INUSTREAMS_API CVideoFrameExt(const CVideoFrameExt&& input) : CVideoFrame(input) {} 
 
         /// \brief    Assignment operator
         INUSTREAMS_API CVideoFrameExt& operator=(const CVideoFrameExt& input);

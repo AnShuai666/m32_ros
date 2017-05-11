@@ -8,7 +8,7 @@
 namespace InuDev
 {
 
-    class CGeneralFrameExt : public CGeneralFrame, public CBaseFrameExt
+    class CGeneralFrameExt : public CGeneralFrame
     {
     public:
         INUSTREAMS_API CGeneralFrameExt (uint32_t bufferSize) : CGeneralFrame(bufferSize) {}

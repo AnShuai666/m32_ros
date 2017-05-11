@@ -26,7 +26,8 @@ namespace InuDev
         eDisabled,          ///<  No post processing algorithm is executed (best runtime)
         eCropOnlyMode,      ///<  Crops edges and disparities (very fast)     
         eFastMode,          ///<  Removes singular points (fast)
-        eAccurate         ///<  Removes singular points + deblocking filter (moderated runtime performance)
+        eAccurate,          ///<  Removes singular points + deblocking filter (moderated runtime performance)
+		eBlob				///<  NU4000 Blob algorithm
     };
 
     ////////////////////////////////////////////////////////////////////////

@@ -25,10 +25,7 @@ namespace InuDev
     class  CBaseFrameExt 
     {
     public:
-        /// \brief    true if this frame was recorded by InuService
-        bool WasRecorded; 
-        
-        CBaseFrameExt() : WasRecorded(false) {}
+
                 
         virtual ~CBaseFrameExt() {}
     };

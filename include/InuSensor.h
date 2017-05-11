@@ -35,7 +35,9 @@ namespace InuDev
     class CWebCamStream;
     class CAuxStream;
     class CGeneralPurposeStream;
-	class CFeaturesTrackingStream;
+    class CAudioStream;
+    class CFeaturesTrackingStream;
+    class CSlamStream;
 
     ///////////////////////////////////////////////////////////////////////
     /// \brief    Information about SW and HW versions
@@ -98,12 +100,10 @@ namespace InuDev
 	///////////////////////////////////////////////////////////////////////
 	enum EConnectionState
 	{
-		eUnknownConnectionState,    ///<  Initial state, connection has not been established
-		eConnected,                 ///<  Sensor is connected 
-		eReady,                     ///<  Module is ready to work.
-		eNotReady,                  ///<  Module is not ready to work.
-		eServiceConnectionError,    ///<  Can't communicate with InuService
-		eSensorConnectionError      ///<  No Sensor is connected
+		eUnknownConnectionState = 0,	///<  Initial state, connection has not been established
+		eConnected = 1,					///<  Sensor is connected 
+		eDisconnected = 5,				///<  No Sensor is connected
+		eServiceDisconnected = 4,		///<  Can't communicate with InuService
 	};
 
 	///////////////////////////////////////////////////////////////////////
@@ -139,6 +139,8 @@ namespace InuDev
     ///////////////////////////////////////////////////////////////////////
     struct CSensorParams
     { 
+		static const int USE_DEFAULT_FPS = -1;
+
         /// \brief    Sensor Resolution
         ESensorResolution SensorRes;   
 
@@ -146,7 +148,7 @@ namespace InuDev
         float FPS;         
 
 		/// \brief    Default constructor which defines the default FPS and resolution
-        CSensorParams() : SensorRes(eDefaultResolution), FPS(30){}
+        CSensorParams() : SensorRes(eDefaultResolution), FPS(float(USE_DEFAULT_FPS)) {}
     };
 
     ///////////////////////////////////////////////////////////////////////
@@ -211,6 +213,12 @@ namespace InuDev
     ///////////////////////////////////////////////////////////////////////
     struct CExposureParams 
     {
+        /// \brief    Exposure Time of the Right sensor
+        uint32_t    ExposureTimeRight;
+
+        /// \brief    Exposure Time of the Left sensor
+        uint32_t    ExposureTimeLeft;
+
         /// \brief    Digital Gain of the Right sensor
         uint32_t    DigitalGainRight;
 
@@ -223,14 +231,17 @@ namespace InuDev
         /// \brief    Analog Gain of the Left sensor
         uint32_t    AnalogGainLeft;
 
-        /// \brief    Exposure Time of the Left sensor
-        uint32_t    ExposureTimeLeft;
-
-        /// \brief    Exposure Time of the Right sensor
-        uint32_t    ExposureTimeRight;
 
 		/// \brief    Default constructor which reset all exposure parameters
-		CExposureParams() : ExposureTimeRight(0), ExposureTimeLeft(0), AnalogGainLeft(0), AnalogGainRight(0), DigitalGainLeft(0), DigitalGainRight(0) { }
+		CExposureParams() :
+			ExposureTimeRight(0),
+			ExposureTimeLeft(0),
+			DigitalGainRight(0),
+			DigitalGainLeft(0),
+			AnalogGainRight(0),
+			AnalogGainLeft(0)
+			{
+			}
     };
 
 	///////////////////////////////////////////////////////////////////////
@@ -323,8 +334,10 @@ namespace InuDev
 		virtual std::shared_ptr<CGazeStream>  CreateGazeStream(uint32_t iChannelID = 0) = 0;
 		virtual std::shared_ptr<CWebCamStream> CreateWebCamStream(uint32_t iChannelID = 0) = 0;
 		virtual std::shared_ptr<CAuxStream>   CreateAuxStream(uint32_t iChannelID = 0) = 0;
-		virtual std::shared_ptr<CGeneralPurposeStream>   CreateGeneralPurposeStream(uint32_t iChannelID = 0) = 0;
-		virtual std::shared_ptr<CFeaturesTrackingStream>   CreateFeaturesTrackingStream(uint32_t iChannelID = 0) = 0;
+        virtual std::shared_ptr<CGeneralPurposeStream>   CreateGeneralPurposeStream(uint32_t iChannelID = 0) = 0;
+        virtual std::shared_ptr<CAudioStream>   CreateAudioStream(uint32_t iChannelID = 0) = 0;
+        virtual std::shared_ptr<CFeaturesTrackingStream>   CreateFeaturesTrackingStream(uint32_t iChannelID = 0) = 0;
+        virtual std::shared_ptr<CSlamStream>  CreateSlamStream(uint32_t iChannelID = 0) = 0;
 
         /// \brief    Derived interface, Init without sensor initial parameters
         ///
@@ -369,7 +382,7 @@ namespace InuDev
 		/// \param[in] oParams    New parameters to apply.
 		/// \param[in] iCameraName    To which camera to apply these parameters, if eAllCameras is used then it is applied to all.
 		/// \return CInuError    Error code, InDev::eOK if operation successfully completed.
-		virtual CInuError  SetSensorParams(const CSensorParams& iParams, ECameraName channel = eAllCameras) = 0;
+		virtual CInuError  SetSensorParams(const CSensorParams& iParams, ECameraName iCameraName) = 0;
         
 		/// \brief    Get information about the SW and HW components. 
 		/// \param[out] oVersion    Version description of each component.
@@ -415,10 +428,18 @@ namespace InuDev
 
         /// \brief		Set one of the assembled projectors' state
         /// 
-        /// \param[in]  iProjectorOn : true - on, false off 
+        /// \param[in]  iLevel : High - high power, Low low power, Off - projector off 
         /// \param[in]  EProjectors - Projector name, eNumOfProjectors is illegal value
         /// \return CInuError
         virtual CInuError SetProjectorLevel(EProjectorLevel iLevel, EProjectors iProjectorID) const = 0;
+
+        /// \brief		Get one of the assembled projectors' state
+        /// 
+        /// \param[out]  iLevel : High - high power, Low low power, Off - projector off 
+        /// \param[out]  EProjectors - Projector name, eNumOfProjectors is illegal value
+        /// \return CInuError
+        virtual CInuError GetProjectorLevel(EProjectorLevel& iLevel, EProjectors iProjectorID) const = 0;
+
 
     protected:
 

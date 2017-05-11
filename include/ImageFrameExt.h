@@ -31,13 +31,13 @@ namespace InuDev
     //      2. Knows Min/Max disparity of Depth Image.
     // Comments:
     ///////////////////////////////////////////////////////////////////////
-    class  CImageFrameExt : public CImageFrame, public CBaseFrameExt
+    class  CImageFrameExt : public CImageFrame
     {
     public:
 
         // Constructors
         // ------------
-        INUSTREAMS_API CImageFrameExt() : CImageFrame(), CBaseFrameExt() {}
+        INUSTREAMS_API CImageFrameExt() : CImageFrame() {}
         INUSTREAMS_API CImageFrameExt(
             unsigned int iWidth,          // full buffer width
             unsigned int iHeight,
@@ -66,7 +66,6 @@ namespace InuDev
         //move assignment operator
         INUSTREAMS_API CImageFrameExt& operator=(const CImageFrameExt& input) { 
             CImageFrame::operator=(input);
-            CBaseFrameExt::operator=(input);
             mMinDisparity = input.mMinDisparity;
             mMaxDisparity = input.mMaxDisparity;
             return *this; 
@@ -75,7 +74,6 @@ namespace InuDev
         //move assignment operator
         INUSTREAMS_API CImageFrameExt& operator=(CImageFrameExt&& input) { 
             CImageFrame::operator=(std::move(input)); 
-            CBaseFrameExt::operator=(std::move(input));
             mMinDisparity = input.mMinDisparity;
             mMaxDisparity = input.mMaxDisparity;
             return *this; 

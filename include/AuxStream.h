@@ -63,7 +63,8 @@ namespace InuDev
        eMagnetometerX,
        eMagnetometerY,
        eMagnetometerZ,
-       eTimeStamp
+       eTimeStamp,
+       eInvalidChannelType = 1000
    };
   
 
@@ -123,9 +124,8 @@ namespace InuDev
         /// This method returns when a new iio header data is ready (blocking) or if an input timeout has elapsed. 
         /// It shall be called only after a Start() was is invoked and but before any invocation of a Stop() is invoked. 
         /// \param[out] oAuxFrame    The returned iio header data.
-        /// \param[in] iTimeout    Function is returned if timeout has elapsed even if no new frame is ready.
         /// \return CInuError    Error code, InDev::eOK if operation successfully completed.
-        virtual CInuError GetHeader(std::map<EAuxType, std::vector<CIioChannelInfo>>& oAuxFrame, unsigned int iTimeout = FPS_BASED_TIMEOUT) = 0;
+        virtual CInuError GetHeader(std::map<EAuxType, std::vector<CIioChannelInfo>>& oAuxFrame) = 0;
 
 
         /// \brief    Retrieves CImuFrame frame (pull) 

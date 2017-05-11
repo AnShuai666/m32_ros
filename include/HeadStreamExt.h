@@ -23,7 +23,7 @@ namespace  InuDev
     //      2. Knows Min/Max disparity of Depth Image.
     // Comments:
     ///////////////////////////////////////////////////////////////////////
-    struct  CHeadFrameExt : public CHeadFrame, public CBaseFrameExt
+    struct  CHeadFrameExt : public CHeadFrame
     {
         // lines to draw on screen 0-1, 2-3, 4-5
         static const int NUM_OF_LINES=6;
@@ -59,7 +59,7 @@ namespace  InuDev
         //#pragma warning(suppress: 4251)    
         CPoint2D      FaceRectSize;
 
-        CHeadFrameExt() : CBaseFrameExt() {}
+        CHeadFrameExt() {}
 
 #ifndef _MSC_VER
         CHeadFrameExt(const CHeadFrameExt&) = default;

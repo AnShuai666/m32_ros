@@ -87,7 +87,6 @@ namespace InuDev
         /// \return InuDev::CInuError    Return error if user sets the fps to be 0 or greater than the depth fps, 
         ///                              otherwise, it is ok.
         virtual CInuError         SetPointCloudFPS(unsigned int iFPS ) = 0;
-
     protected:
 
 

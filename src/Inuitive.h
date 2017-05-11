@@ -6,9 +6,9 @@
 #include <fstream>
 #include <string>
 #include <memory>
+#include <unistd.h>
 
 #include "InuSensor.h"
-#include "InuSensorExt.h"
 #include "DepthStream.h"
 #include "VideoStream.h"
 #include "WebCamStream.h"
@@ -44,7 +44,7 @@ class Inuitive {
 public:
 	Inuitive(ros::NodeHandle& n);
 	~Inuitive();
-	std::shared_ptr<InuDev::CInuSensorExt> inuSensor;
+	std::shared_ptr<InuDev::CInuSensor> inuSensor;
 	bool Start();
 	bool Stop();
 	void SaveDepthFrams(std::shared_ptr<InuDev::CDepthStream> iStream,

@@ -21,7 +21,7 @@ namespace  InuDev
     // Responsibilities: 
     // Comments:
     ///////////////////////////////////////////////////////////////////////
-    struct CHandsFrameExt : public CHandsFrame, public CBaseFrameExt
+    struct CHandsFrameExt : public CHandsFrame
     {
         // for debug use 
         // --------------- 
@@ -30,7 +30,7 @@ namespace  InuDev
 
         unsigned short	        HandRadius[2];
 
-        CHandsFrameExt() : CBaseFrameExt(), HandValleys() {}
+        CHandsFrameExt() : HandValleys() {}
 
 #ifndef _MSC_VER
         CHandsFrameExt(const CHandsFrameExt&) = default;
